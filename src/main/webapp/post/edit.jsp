@@ -28,10 +28,10 @@
                 Новая вакансия.
             </div>
             <div class="card-body">
-                <form>
-                    <div class="form-group">
+                <form action="<%=request.getContextPath()%>/post/save" method="post">
+                <div class="form-group">
                         <label>Название</label>
-                        <input type="text" class="form-control">
+                    <input type="text" class="form-control" name="name">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

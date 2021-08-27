@@ -4,6 +4,7 @@ import java.sql.Timestamp;
 import java.util.Objects;
 
 public class Post {
+
     private int id;
     private String name;
     private String description;
@@ -60,4 +61,9 @@ public class Post {
     public int hashCode() {
         return Objects.hash(id);
     }
+
+//    public void save(Post post) {
+//        post.setId(POST_ID.incrementAndGet());
+//        posts.put(post.getId(), post);
+//    }
 }
