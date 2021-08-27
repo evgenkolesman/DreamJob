@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="dream.store.Store" %>
 <%@ page import="dream.model.Post" %>
+<%@ page import="java.sql.Timestamp" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -22,28 +23,31 @@
     <title>Работа мечты</title>
 </head>
 <body>
+<%
+    String id = request.getParameter("id");
+    Post post = new Post(0, "", "", new Timestamp(System.currentTimeMillis()));
+    if (id != null) {
+        post = Store.instOf().findById(Integer.valueOf(id));
+    }
+%>
 <div class="container pt-3">
-
     <div class="row">
         <div class="card" style="width: 100%">
             <div class="card-header">
-                Вакансии
+                <% if (id == null) { %>
+                Новая вакансия.
+                <% } else { %>
+                Редактирование вакансии.
+                <% } %>
             </div>
             <div class="card-body">
-                <table class="table">
-                    <thead>
-                    <tr>
-                        <th scope="col">Названия</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <% for (Post post : Store.instOf().findAllPosts()) { %>
-                    <tr>
-                        <td><%= post.getName() %></td>
-                    </tr>
-                    <% } %>
-                    </tbody>
-                </table>
+                <form action="<%=request.getContextPath()%>/post/save?id=<%=post.getId()%>" method="post">
+                    <div class="form-group">
+                        <label>Имя</label>
+                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
             </div>
         </div>
     </div>
