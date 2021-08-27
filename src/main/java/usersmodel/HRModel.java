@@ -1,6 +1,6 @@
-package users;
+package usersmodel;
 
-public interface HR {
+public interface HRModel {
     String publishVacancy();
 
     void giveOffer();
