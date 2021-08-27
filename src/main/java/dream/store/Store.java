@@ -12,12 +12,12 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public class Store {
     private static AtomicInteger POST_ID = new AtomicInteger(4);
+    private static AtomicInteger CANDIDATE_ID = new AtomicInteger(5);
 
     private static final Store INST = new Store();
 
     private final Map<Integer, Post> posts = new ConcurrentHashMap<>();
-
-    private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
+        private final Map<Integer, Candidate> candidates = new ConcurrentHashMap<>();
 
     private Store() {
         posts.put(1, new Post(1, "Junior Java Job", "Junior vacancy ", new Timestamp(System.currentTimeMillis())));
@@ -43,5 +43,10 @@ public class Store {
     public void save(Post post) {
         post.setId(POST_ID.incrementAndGet());
         posts.put(post.getId(), post);
+    }
+
+    public void save(Candidate candidate) {
+        candidate.setId(CANDIDATE_ID.incrementAndGet());
+        candidates.put(candidate.getId(), candidate);
     }
 }

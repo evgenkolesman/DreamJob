@@ -29,9 +29,9 @@
             </div>
             <div class="card-body">
                 <form action="<%=request.getContextPath()%>/post/save" method="post">
-                <div class="form-group">
+                    <div class="form-group">
                         <label>Название</label>
-                    <input type="text" class="form-control" name="name">
+                        <input type="text" class="form-control" name="name">
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
