@@ -62,8 +62,4 @@ public class Post {
         return Objects.hash(id);
     }
 
-//    public void save(Post post) {
-//        post.setId(POST_ID.incrementAndGet());
-//        posts.put(post.getId(), post);
-//    }
 }

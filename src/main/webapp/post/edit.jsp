@@ -21,30 +21,10 @@
 
     <title>Работа мечты</title>
 </head>
-<%--<body>--%>
-<%--<div class="container pt-3">--%>
-<%--    <div class="row">--%>
-<%--        <div class="card" style="width: 100%">--%>
-<%--            <div class="card-header">--%>
-<%--                Новая вакансия.--%>
-<%--            </div>--%>
-<%--            <div class="card-body">--%>
-<%--                <form action="<%=request.getContextPath()%>/post/save" method="post">--%>
-<%--                    <div class="form-group">--%>
-<%--                        <label>Название</label>--%>
-<%--                        <input type="text" class="form-control" name="name">--%>
-<%--                    </div>--%>
-<%--                    <button type="submit" class="btn btn-primary">Сохранить</button>--%>
-<%--                </form>--%>
-<%--            </div>--%>
-<%--        </div>--%>
-<%--    </div>--%>
-<%--</div>--%>
-
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "", "", new Timestamp(System.currentTimeMillis()));
+    Post post = new Post(0, "","", new Timestamp(System.currentTimeMillis()));
     if (id != null) {
         post = Store.instOf().findById(Integer.valueOf(id));
     }

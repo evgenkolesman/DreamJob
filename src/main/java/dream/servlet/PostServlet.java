@@ -15,8 +15,10 @@ public class PostServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         Store.instOf().save(
-                new Post( Integer.valueOf(req.getParameter("id")),
-                        req.getParameter("name"), req.getPathInfo(),
+                new Post(
+                        Integer.valueOf(req.getParameter("id")),
+                        req.getParameter("name"),
+                        req.getPathInfo(),
                         new Timestamp(System.currentTimeMillis()))
         );
         resp.sendRedirect(req.getContextPath() + "/posts.jsp");
