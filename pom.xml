@@ -11,7 +11,7 @@
 
   <name>DreamJob Maven Webapp</name>
   <!-- FIXME change it to the project's website -->
-  <url>http://www.example.com</url>
+  <!--url>http://www.example.com</url-->
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -37,5 +37,10 @@
         <version>4.0.1</version>
         <scope>provided</scope>
       </dependency>
+    <dependency>
+      <groupId>javax.servlet</groupId>
+      <artifactId>jstl</artifactId>
+      <version>1.2</version>
+    </dependency>
   </dependencies>
 </project>
