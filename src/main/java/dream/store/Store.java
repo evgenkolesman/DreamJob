@@ -52,14 +52,8 @@ public class Store {
     }
 
     public void save(Candidate candidate) {
-//        if (candidate.getId() == 0) {
             candidate.setId(CANDIDATE_ID.incrementAndGet());
-//        }
             candidates.put(candidate.getId(), candidate);
         }
-
-//    public Candidate findById(int id) {
-//        return candidates.get(id);
-//    }
     }
 

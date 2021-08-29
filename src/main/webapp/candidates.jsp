@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="dream.store.Store" %>
 <%@ page import="dream.model.Candidate" %>
+<%@ page import="java.util.Collection" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -36,7 +36,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Candidate can : Store.instOf().findAllCandidates()) { %>
+                    <% for (Candidate can : (Collection<Candidate>) request.getAttribute("candidate")) { %>
                     <tr>
                         <td><%= can.getName() %></td>
                     </tr>

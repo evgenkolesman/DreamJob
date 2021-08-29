@@ -10,10 +10,17 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 public class CandidateServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setAttribute("candidates", Store.instOf().findAllCandidates());
+        req.getRequestDispatcher("candidates.jsp").forward(req, resp);
+    }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         Store.instOf().save(new Candidate(0, req.getParameter("name")));
-        resp.sendRedirect(req.getContextPath() + "/candidate.jsp");
+        resp.sendRedirect(req.getContextPath() + "/candidate.do");
     }
 }

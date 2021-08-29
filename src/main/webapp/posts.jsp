@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="dream.store.Store" %>
 <%@ page import="dream.model.Post" %>
+<%@ page import="java.util.Collection" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -29,7 +30,7 @@
             </div>
             <div class="card-body">
                 <table class="table">
-                    <% for (Post post : Store.instOf().findAllPosts()) { %>
+                    <% for (Post post : (Collection<Post>) request.getAttribute("posts")) { %>
                     <tr>
                         <td>
                             <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%=post.getId()%>">
@@ -39,11 +40,11 @@
                             <% } %>
                         </td>
 
-                    <thead>
-                    <tr>
-                        <th scope="col">Названия</th>
-                    </tr>
-                    </thead>
+                        <thead>
+                            <tr>
+                            <th scope="col">Названия</th>
+                            </tr>
+                        </thead>
                     </tr>
                 </table>
             </div>
