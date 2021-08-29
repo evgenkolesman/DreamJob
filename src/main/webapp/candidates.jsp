@@ -36,7 +36,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <% for (Candidate can : (Collection<Candidate>) request.getAttribute("candidate")) { %>
+                    <% for (Candidate can : (Collection<Candidate>) request.getAttribute("candidates")) { %>
                     <tr>
                         <td><%= can.getName() %></td>
                     </tr>

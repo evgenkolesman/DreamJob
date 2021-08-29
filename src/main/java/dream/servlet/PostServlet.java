@@ -25,7 +25,7 @@ public class PostServlet extends HttpServlet {
                 new Post(
                         Integer.valueOf(req.getParameter("id")),
                         req.getParameter("name"),
-                        req.getParameter("description"),
+                        "",
                         new Timestamp(System.currentTimeMillis())
                 )
         );
