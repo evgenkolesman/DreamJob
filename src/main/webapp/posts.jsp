@@ -38,13 +38,11 @@
                             </td>
                         </tr>
                     </c:forEach>
-
                         <thead>
                             <tr>
                             <th scope="col">Названия</th>
                             </tr>
                         </thead>
-
                 </table>
             </div>
         </div>
