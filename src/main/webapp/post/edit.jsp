@@ -24,7 +24,7 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "","", new Timestamp(System.currentTimeMillis()));
+    Post post = new Post(0, "", "", new Timestamp(System.currentTimeMillis()));
     if (id != null) {
         post = Store.instOf().findById(Integer.valueOf(id));
     }
@@ -52,5 +52,4 @@
     </div>
 </div>
 </body>
-
 </html>

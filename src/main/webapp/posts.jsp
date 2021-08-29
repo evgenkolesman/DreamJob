@@ -29,18 +29,22 @@
             </div>
             <div class="card-body">
                 <table class="table">
+                    <% for (Post post : Store.instOf().findAllPosts()) { %>
+                    <tr>
+                        <td>
+                            <a href="<%=request.getContextPath()%>/post/edit.jsp?id=<%=post.getId()%>">
+                                <i class="fa fa-edit mr-3"></i>
+                            </a>
+                            <%=post.getName() %>
+                            <% } %>
+                        </td>
+
                     <thead>
                     <tr>
                         <th scope="col">Названия</th>
                     </tr>
                     </thead>
-                    <tbody>
-                    <% for (Post post : Store.instOf().findAllPosts()) { %>
-                    <tr>
-                        <td><%= post.getName() %></td>
                     </tr>
-                    <% } %>
-                    </tbody>
                 </table>
             </div>
         </div>
