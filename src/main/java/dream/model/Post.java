@@ -3,7 +3,7 @@ package dream.model;
 import java.sql.Timestamp;
 import java.util.Objects;
 
-public class Post {
+public class Post implements Model{
 
     private int id;
     private String name;

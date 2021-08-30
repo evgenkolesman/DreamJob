@@ -1,16 +1,14 @@
 package dream.store;
 
-import dream.model.Candidate;
-import dream.model.Post;
+import dream.model.Model;
 
 import java.util.Collection;
 
 public interface Store {
-    Collection<Post> findAllPosts();
+    Collection<Model> findAll(String className);
 
-    Collection<Candidate> findAllCandidates();
+    void save(Model model);
 
-    void save(Post post);
+    Model findById(Model model);
 
-    Post findById(int id);
 }
