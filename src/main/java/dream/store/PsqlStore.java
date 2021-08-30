@@ -148,13 +148,13 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Model findById(Model model) {
+    public Model findById(int id, String className) {
+        Model model = null;
         try (Connection cn = pool.getConnection();
-
         ) {
-             if(Objects.equals(model.getClass(), Post.class)) {
+             if(Objects.equals(className, "Post")) {
                 PreparedStatement ps =  cn.prepareStatement("SELECT FROM post where id = ?)");
-                ps.setInt(1, model.getId());
+                ps.setInt(1, id);
                 ps.executeQuery();
                 ResultSet rs = ps.getResultSet();
                 if (rs.next()) {
@@ -162,13 +162,13 @@ public class PsqlStore implements Store {
                             rs.getString("description"), rs.getTimestamp("created"));
                 }
             }
-            if(Objects.equals(model.getClass(), Candidate.class)) {
+            if(Objects.equals(className, "Candidate")) {
                 PreparedStatement ps =  cn.prepareStatement("SELECT FROM candidates where id = ?)");
-                ps.setInt(1, model.getId());
+                ps.setInt(1, id);
                 ps.executeQuery();
                 ResultSet rs = ps.getResultSet();
                 if (rs.next()) {
-                    model = new Candidate(rs.getInt("id"), rs.getString("name"));
+                    model = new Candidate(id, rs.getString("name"));
                 }
             }
 

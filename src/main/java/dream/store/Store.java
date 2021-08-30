@@ -9,6 +9,6 @@ public interface Store {
 
     void save(Model model);
 
-    Model findById(Model model);
+    Model findById(int id, String className);
 
 }
