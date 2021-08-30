@@ -13,7 +13,7 @@ public class DownloadServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         File users = null;
-        for (File file : new File("\\Documents\\").listFiles()) {
+        for (File file : new File(":/IdeaProjects/DreamJob/").listFiles()) {
             if ("User.txt".equals(file.getName())) {
                 users = file;
                 break;
