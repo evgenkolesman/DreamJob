@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="dream.store.Store" %>
+<%@ page import="dream.store.MemStore" %>
 <%@ page import="dream.model.Post" %>
 <%@ page import="java.sql.Timestamp" %>
 <!doctype html>
@@ -26,7 +26,7 @@
     String id = request.getParameter("id");
     Post post = new Post(0, "", "", new Timestamp(System.currentTimeMillis()));
     if (id != null) {
-        post = Store.instOf().findById(Integer.valueOf(id));
+        post = MemStore.instOf().findById(Integer.valueOf(id));
     }
 %>
 <div class="container pt-3">
