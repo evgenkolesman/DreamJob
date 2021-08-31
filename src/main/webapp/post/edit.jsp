@@ -21,35 +21,35 @@
 
     <title>Работа мечты</title>
 </head>
-<body>
-<%
-    String id = request.getParameter("id");
-    Post post = new Post(1, "", "", new Timestamp(System.currentTimeMillis()));
-    if (id != null) {
-        post = (Post) PsqlStore.instOf().findById(Integer.parseInt(id), "Post");
-    }
-%>
-<div class="container pt-3">
-    <div class="row">
-        <div class="card" style="width: 100%">
-            <div class="card-header">
-                <% if (id == null) { %>
-                Новая вакансия.
-                <% } else { %>
-                Редактирование вакансии.
-                <% } %>
-            </div>
-            <div class="card-body">
-                <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
-                    <div class="form-group">
-                        <label>Название</label>
-                        <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+    <body>
+        <%
+            String id = request.getParameter("id");
+            Post post = new Post(1 , "", "", new Timestamp(System.currentTimeMillis()));
+            if (id != null) {
+                post = (Post) PsqlStore.instOf().findById(Integer.parseInt(id), "Post");
+            }
+        %>
+            <div class="container pt-3">
+                <div class="row">
+                    <div class="card" style="width: 100%">
+                        <div class="card-header">
+                            <% if (id == null) { %>
+                            Новая вакансия.
+                            <% } else { %>
+                            Редактирование вакансии.
+                            <% } %>
+                        </div>
+                        <div class="card-body">
+                            <form action="<%=request.getContextPath()%>/posts.do?id=<%=post.getId()%>" method="post">
+                                <div class="form-group">
+                                    <label>Название</label>
+                                    <input type="text" class="form-control" name="name" value="<%=post.getName()%>">
+                                </div>
+                                <button type="submit" class="btn btn-primary">Сохранить</button>
+                            </form>
+                        </div>
                     </div>
-                    <button type="submit" class="btn btn-primary">Сохранить</button>
-                </form>
+                </div>
             </div>
-        </div>
-    </div>
-</div>
-</body>
+    </body>
 </html>

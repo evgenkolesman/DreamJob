@@ -1,6 +1,7 @@
 package dream.store;
 
 import dream.model.Candidate;
+import dream.model.Model;
 import dream.model.Post;
 
 
@@ -11,7 +12,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
-/*public class MemStore implements Store {
+public class MemStore implements Store {
     private static AtomicInteger POST_ID = new AtomicInteger(4);
     private static AtomicInteger CANDIDATE_ID = new AtomicInteger(5);
 
@@ -33,13 +34,15 @@ import java.util.concurrent.atomic.AtomicInteger;
         return INST;
     }
 
-    public Collection<Post> findAllPosts() {
-        return posts.values();
-    }
 
-    public Collection<Candidate> findAllCandidates() {
-        return candidates.values();
-    }
+
+//    public Collection<Post> findAllPosts() {
+//        return posts.values();
+//    }
+//
+//    public Collection<Candidate> findAllCandidates() {
+//        return candidates.values();
+//    }
 
     public void save(Post post) {
         if (post.getId() == 0) {
@@ -60,5 +63,20 @@ import java.util.concurrent.atomic.AtomicInteger;
             candidate.setId(CANDIDATE_ID.incrementAndGet());
             candidates.put(candidate.getId(), candidate);
         }
+
+    @Override
+    public Collection<Model> findAll(String className) {
+        return null;
     }
-*/
+
+    @Override
+    public void save(Model model) {
+
+    }
+
+    @Override
+    public Model findById(int id, String className) {
+        return null;
+    }
+}
+
