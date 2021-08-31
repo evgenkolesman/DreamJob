@@ -1,7 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
-<%@ page import="dream.store.MemStore" %>
 <%@ page import="dream.model.Post" %>
 <%@ page import="java.sql.Timestamp" %>
+<%@ page import="dream.store.PsqlStore" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -24,9 +24,9 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Post post = new Post(0, "", "", new Timestamp(System.currentTimeMillis()));
+    Post post = new Post(1, "", "", new Timestamp(System.currentTimeMillis()));
     if (id != null) {
-        post = MemStore.instOf().findById(Integer.valueOf(id));
+        post = (Post) PsqlStore.instOf().findById(Integer.parseInt(id), "Post");
     }
 %>
 <div class="container pt-3">

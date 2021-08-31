@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="dream.model.Candidate" %>
-<%@ page import="dream.store.MemStore" %>
+<%@ page import="dream.store.PsqlStore" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -23,9 +23,9 @@
 <body>
 <%
     String id = request.getParameter("id");
-    Candidate candidate = new Candidate(0, "");
+    Candidate candidate = new Candidate(1, "");
     if (id != null) {
-        candidate = MemStore.instOf().findByIdCandidates(Integer.valueOf(id));
+        candidate = (Candidate) PsqlStore.instOf().findById(Integer.parseInt(id), "Candidate");
     }
 %>
 <div class="container pt-3">

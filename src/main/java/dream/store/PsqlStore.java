@@ -1,5 +1,6 @@
 package dream.store;
 
+import dream.model.Model;
 import org.apache.commons.dbcp2.BasicDataSource;
 import dream.model.Candidate;
 import dream.model.Post;
@@ -9,10 +10,7 @@ import java.io.FileReader;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Properties;
+import java.util.*;
 
 public class PsqlStore implements Store {
 
@@ -50,102 +48,136 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Collection<Post> findAllPosts() {
-        List<Post> posts = new ArrayList<>();
+    public Collection<Model> findAll(String nameClass) {
+        List<Model> models = new ArrayList<>();
+        if(nameClass.equals("Post")) {
         try (Connection cn = pool.getConnection();
              PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post")
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    posts.add(new Post(it.getInt("id"), it.getString("name"),
+                    models.add(new Post(it.getInt("id"), it.getString("name"),
                             it.getString("description"), it.getTimestamp("created") ));
                 }
             }
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return posts;
-    }
-
-    @Override
-    public Collection<Candidate> findAllCandidates() {
-        List<Candidate> candidates = new ArrayList<>();
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate")
-        ) {
-            try (ResultSet it = ps.executeQuery()) {
-                while (it.next()) {
-                    candidates.add(new Candidate(it.getInt("id"),
-                            it.getString("name")));
+        } }
+        if(nameClass.equals("Candidate")) {
+            try (Connection cn = pool.getConnection();
+                 PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate")
+            ) {
+                try (ResultSet it = ps.executeQuery()) {
+                    while (it.next()) {
+                        models.add(new Candidate(it.getInt("id"), it.getString("name") ));
+                    }
                 }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
-        return candidates;
+        return models;
+
     }
 
     @Override
-    public void save(Post post) {
-        if (post.getId() == 0) {
-            create(post);
+    public void save(Model model) {
+        if (model.getId() == 0) {
+            create(model);
         } else {
-            update(post);
+            update(model);
         }
     }
 
-    private Post create(Post post) {
+    private Model create(Model model) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("INSERT INTO post(name, description, created) VALUES (?, ?, ?)")
         ) {
-            ps.setString(1, post.getName());
-            ps.setString(2, post.getDescription());
-            ps.setTimestamp(3, post.getCreated());
-            ps.execute();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    post.setId(id.getInt(1));
+            if(Objects.equals(model.getClass(), Post.class)) {
+                PreparedStatement ps =  cn.prepareStatement("INSERT INTO post (name) VALUES(?);",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, model.getName());
+                ps.executeUpdate();
+                try (ResultSet id = ps.getGeneratedKeys()) {
+                    if (id.next()) {
+                        model.setId(id.getInt(1));
+                    }
                 }
             }
+            if(Objects.equals(model.getClass(), Candidate.class)) {
+                PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate (name) VALUES(?);",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, model.getName());
+                ps.executeUpdate();
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return post;
+        return model;
     }
 
-    private Post update(Post post) {
+    private Model update(Model model) {
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("UPDATE post(name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS)
+
         ) {
-            ps.setString(1, post.getName());
-            ps.executeUpdate();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    post.setId(id.getInt(1));
+            if(Objects.equals(model.getClass(), Post.class)) {
+                PreparedStatement ps =  cn.prepareStatement("UPDATE post (name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, model.getName());
+                ps.executeUpdate();
+                try (ResultSet id = ps.getGeneratedKeys()) {
+                    if (id.next()) {
+                        model.setId(id.getInt(1));
+                    }
                 }
             }
+            if(Objects.equals(model.getClass(), Candidate.class)) {
+                PreparedStatement ps =  cn.prepareStatement("UPDATE candidate (name) VALUES (?)", PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, model.getName());
+                ps.executeUpdate();
+                try (ResultSet id = ps.getGeneratedKeys()) {
+                    if (id.next()) {
+                        model.setId(id.getInt(1));
+                    }
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return post;
+        return model;
     }
 
     @Override
-    public Post findById(int id) {
-        Post post = null;
+    public Model findById(int id, String className) {
+        Model model = null;
         try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT FROM post where id = ?)")
         ) {
-            ps.setInt(1, id);
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
-            if(rs.next()) {
-                post = new Post(rs.getInt("id"), rs.getString("name"),
-                        rs.getString("description"), rs.getTimestamp("created"));
+             if(Objects.equals(className, "Post")) {
+                PreparedStatement ps =  cn.prepareStatement("SELECT FROM post where id = ?)");
+                ps.setInt(1, id);
+                ps.executeQuery();
+                ResultSet rs = ps.getResultSet();
+                if (rs.next()) {
+                    model = new Post(rs.getInt("id"), rs.getString("name"),
+                            rs.getString("description"), rs.getTimestamp("created"));
+                }
             }
+            if(Objects.equals(className, "Candidate")) {
+                PreparedStatement ps =  cn.prepareStatement("SELECT FROM candidates where id = ?)");
+                ps.setInt(1, id);
+                ps.executeQuery();
+                ResultSet rs = ps.getResultSet();
+                if (rs.next()) {
+                    model = new Candidate(id, rs.getString("name"));
+                }
+            }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return post;
+        return model;
     }
+
+
+
 }
