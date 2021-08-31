@@ -45,6 +45,11 @@
                     </c:if>
                 </form>
             </div>
+            <c:if test="${user != null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
+                </li>
+            </c:if>
         </div>
     </div>
 </div>
