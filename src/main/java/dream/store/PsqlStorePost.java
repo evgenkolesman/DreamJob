@@ -153,7 +153,7 @@ public class PsqlStore implements Store {
         Model model = null;
         try (Connection cn = pool.getConnection()) {
              if(Objects.equals(className, "Post")) {
-                PreparedStatement ps =  cn.prepareStatement("SELECT FROM post where id=?");
+                PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post where id=?");
                 ps.setInt(1, id);
                 ps.executeQuery();
                 ResultSet rs = ps.getResultSet();
@@ -163,7 +163,7 @@ public class PsqlStore implements Store {
                 }
             }
             if(Objects.equals(className, "Candidate")) {
-                PreparedStatement ps =  cn.prepareStatement("SELECT FROM candidates where id=?");
+                PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate where id=?");
                 ps.setInt(1, id);
                 ps.executeQuery();
                 ResultSet rs = ps.getResultSet();
