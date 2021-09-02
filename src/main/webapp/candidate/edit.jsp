@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" %>
 <%@ page import="dream.model.Candidate" %>
-<%@ page import="dream.store.PsqlStore" %>
+<%@ page import="dream.store.PsqlStoreCandidate" %>
 <!doctype html>
 <html lang="en">
 <head>
@@ -20,35 +20,35 @@
 
     <title>Работа мечты</title>
 </head>
-<body>
-    <%
-        String id = request.getParameter("id");
-        Candidate candidate = new Candidate(1, "");
-        if (id != null) {
-            candidate = (Candidate) PsqlStore.instOf().findById(Integer.parseInt(id), "Candidate");
-        }
-    %>
-    <div class="container pt-3">
-        <div class="row">
-            <div class="card" style="width: 100%">
-                <div class="card-header">
-                    <%if (id == null) { %>
-                    Новый кандидат.
-                    <% } else { %>
-                    Редактирование кандидата.
-                    <% } %>
-                </div>
-                <div class="card-body">
-                    <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
-                        <div class="form-group">
-                            <label>Имя</label>
-                            <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
-                        </div>
-                        <button type="submit" class="btn btn-primary">Сохранить</button>
-                    </form>
+    <body>
+        <%
+            String id = request.getParameter("id");
+            Candidate candidate = new Candidate(0, "");
+            if (id != null) {
+                candidate = (Candidate) PsqlStoreCandidate.instOf().findById(Integer.parseInt(id));
+            }
+        %>
+        <div class="container pt-3">
+            <div class="row">
+                <div class="card" style="width: 100%">
+                    <div class="card-header">
+                        <%if (id == null) { %>
+                        Новый кандидат.
+                        <% } else { %>
+                        Редактирование кандидата.
+                        <% } %>
+                    </div>
+                    <div class="card-body">
+                        <form action="<%=request.getContextPath()%>/candidates.do?id=<%=candidate.getId()%>" method="post">
+                            <div class="form-group">
+                                <label>Имя</label>
+                                <input type="text" class="form-control" name="name" value="<%=candidate.getName()%>">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Сохранить</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-</body>
+    </body>
 </html>

@@ -40,4 +40,9 @@ public class Candidate implements Model {
     public int hashCode() {
         return Objects.hash(id, name);
     }
+
+    @Override
+    public String toString() {
+        return String.format("Candidate{id=%d, name='%s'}", id, name);
+    }
 }

@@ -34,16 +34,6 @@ public class MemStore implements Store {
         return INST;
     }
 
-
-
-//    public Collection<Post> findAllPosts() {
-//        return posts.values();
-//    }
-//
-//    public Collection<Candidate> findAllCandidates() {
-//        return candidates.values();
-//    }
-
     public void save(Post post) {
         if (post.getId() == 0) {
             post.setId(POST_ID.incrementAndGet());
@@ -65,7 +55,7 @@ public class MemStore implements Store {
         }
 
     @Override
-    public Collection<Model> findAll(String className) {
+    public Collection findAll() {
         return null;
     }
 
@@ -74,9 +64,6 @@ public class MemStore implements Store {
 
     }
 
-    @Override
-    public Model findById(int id, String className) {
-        return null;
-    }
+
 }
 

@@ -17,6 +17,11 @@ public class Post implements Model{
         this.created = created;
     }
 
+    public Post(String name, String description) {
+        this.name = name;
+        this.description = description;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -62,4 +67,9 @@ public class Post implements Model{
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return String.format("Post{id=%d, name='%s', " +
+                "description='%s', created=%s}", id, name, description, created);
+    }
 }

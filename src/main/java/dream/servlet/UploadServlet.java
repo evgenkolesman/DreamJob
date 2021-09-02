@@ -4,6 +4,7 @@ import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
@@ -18,11 +19,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+
 public class UploadServlet extends HttpServlet {
+    Logger logger = Logger.getLogger(UploadServlet.class);
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         List<String> images = new ArrayList<>();
-        for (File name : Objects.requireNonNull(new File("./Downloads/").listFiles())) {
+        for (File name : Objects.requireNonNull(new File("./").listFiles())) {
             images.add(name.getName());
         }
         req.setAttribute("images", images);
@@ -39,7 +42,7 @@ public class UploadServlet extends HttpServlet {
         ServletFileUpload upload = new ServletFileUpload(factory);
         try {
             List<FileItem> items = upload.parseRequest(req);
-            File folder = new File("./Downloads/");
+            File folder = new File("./");
             if (!folder.exists()) {
                 folder.mkdir();
             }
@@ -52,7 +55,7 @@ public class UploadServlet extends HttpServlet {
                 }
             }
         } catch (FileUploadException e) {
-            e.printStackTrace();
+            logger.error("Error: ", e);
         }
         doGet(req, resp);
     }

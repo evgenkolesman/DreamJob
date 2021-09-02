@@ -2,35 +2,32 @@ package dream.store;
 
 import dream.model.Model;
 import org.apache.commons.dbcp2.BasicDataSource;
-import dream.model.Candidate;
 import dream.model.Post;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
+import java.sql.*;
 import java.util.*;
 import org.apache.log4j.Logger;
 
-public class PsqlStore implements Store {
+public class PsqlStorePost implements Store {
 
-    private static final Logger logger = Logger.getLogger(PsqlStore.class);
+    private static final Logger logger = Logger.getLogger(PsqlStorePost.class);
     private final BasicDataSource pool = new BasicDataSource();
 
-    private PsqlStore() {
+    private PsqlStorePost() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("db.properties")
+                new FileReader("./src/main/resources/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            logger.error("Error: ", e);
         }
         try {
             Class.forName(cfg.getProperty("jdbc.driver"));
         } catch (Exception e) {
-            throw new IllegalStateException(e);
+            logger.error("Error: ", e);
         }
         pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
         pool.setUrl(cfg.getProperty("jdbc.url"));
@@ -42,7 +39,7 @@ public class PsqlStore implements Store {
     }
 
     private static final class Lazy {
-        private static final Store INST = new PsqlStore();
+        private static final Store INST = new PsqlStorePost();
     }
 
     public static Store instOf() {
@@ -50,131 +47,119 @@ public class PsqlStore implements Store {
     }
 
     @Override
-    public Collection<Model> findAll(String nameClass) {
-        List<Model> models = new ArrayList<>();
-        if(nameClass.equals("Post")) {
-        try (Connection cn = pool.getConnection();
-             PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post")
-        ) {
-            try (ResultSet it = ps.executeQuery()) {
-                while (it.next()) {
-                    models.add(new Post(it.getInt("id"), it.getString("name"),
-                            it.getString("description"), it.getTimestamp("created") ));
-                }
-            }
-        } catch (Exception e) {
-            logger.error("Exception: ", e);
-        }
-        }
-        if(nameClass.equals("Candidate")) {
+    public Collection<Post> findAll() {
+        List<Post> models = new ArrayList<>();
             try (Connection cn = pool.getConnection();
-                 PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate")
+                 PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
             ) {
                 try (ResultSet it = ps.executeQuery()) {
                     while (it.next()) {
-                        models.add(new Candidate(it.getInt("id"), it.getString("name") ));
+                        models.add(new Post(it.getInt("id"), it.getString("name"),
+                                it.getString("description"), it.getTimestamp("created")));
                     }
                 }
             } catch (Exception e) {
                 logger.error("Exception: ", e);
             }
-        }
         return models;
     }
 
     @Override
     public void save(Model model) {
-        if (model.getId() == 0) {
-            create(model);
+        Post post = (Post) model;
+        if (post.getId() == 0) {
+            create(post);
         } else {
-            update(model);
+            update(post);
         }
     }
 
-    private Model create(Model model) {
+    private Model create(Post post) {
         try (Connection cn = pool.getConnection()) {
-            if(Objects.equals(model.getClass(), Post.class)) {
-                PreparedStatement ps =  cn.prepareStatement("INSERT INTO post (name) VALUES (?);",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, model.getName());
-                ps.executeUpdate();
-                try (ResultSet id = ps.getGeneratedKeys()) {
-                    if (id.next()) {
-                        model.setId(id.getInt(1));
-                    }
+            PreparedStatement ps = cn.prepareStatement(
+                    "INSERT INTO post (name, description, created) VALUES (?, ?, ?);",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, post.getName());
+            ps.setString(2, post.getDescription());
+            ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
+            ps.executeUpdate();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    post.setId(id.getInt(1));
                 }
             }
-            if(Objects.equals(model.getClass(), Candidate.class)) {
-                PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate (name) VALUES (?);",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, model.getName());
-                ps.executeUpdate();
-            }
-
-        } catch (Exception e) {
+        } catch (SQLException e) {
             logger.error("Exception: ", e);
         }
-        return model;
+        return post;
     }
 
-    private Model update(Model model) {
+    private Model update(Post post) {
         try (Connection cn = pool.getConnection()) {
-            if(Objects.equals(model.getClass(), Post.class)) {
-                PreparedStatement ps =  cn.prepareStatement("UPDATE post (name) SET VALUES (?)",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, model.getName());
-                ps.executeUpdate();
-                try (ResultSet id = ps.getGeneratedKeys()) {
-                    if (id.next()) {
-                        model.setId(id.getInt(1));
-                    }
-                }
-            }
-            if(Objects.equals(model.getClass(), Candidate.class)) {
-                PreparedStatement ps = cn.prepareStatement("UPDATE candidate (name) SET VALUES ?",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, model.getName());
-                ps.executeUpdate();
-                try (ResultSet id = ps.getGeneratedKeys()) {
-                    if (id.next()) {
-                        model.setId(id.getInt(1));
-                    }
-                }
-            }
 
+                PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = ?",
+                        PreparedStatement.RETURN_GENERATED_KEYS);
+                ps.setString(1, post.getName());
+                ps.executeUpdate();
+                try (ResultSet id = ps.getGeneratedKeys()) {
+                    if (id.next()) {
+                        post.setId(id.getInt(1));
+                    }
+                }
         } catch (Exception e) {
             logger.error("Exception: ", e);
         }
-        return model;
+        return post;
     }
 
     @Override
-    public Model findById(int id, String className) {
-        Model model = null;
+    public Model findById(int id) {
+        Post post = null;
         try (Connection cn = pool.getConnection()) {
-             if(Objects.equals(className, "Post")) {
                 PreparedStatement ps =  cn.prepareStatement("SELECT * FROM post where id=?");
                 ps.setInt(1, id);
                 ps.executeQuery();
-                ResultSet rs = ps.getResultSet();
-                if (rs.next()) {
-                    model = new Post(rs.getInt("id"), rs.getString("name"),
-                            rs.getString("description"), rs.getTimestamp("created"));
+                try (ResultSet rs = ps.getResultSet()) {
+                    if (rs.next()) {
+                        post = new Post(rs.getInt("id"), rs.getString("name"),
+                                rs.getString("description"), rs.getTimestamp("created"));
+                    }
                 }
-            }
-            if(Objects.equals(className, "Candidate")) {
-                PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate where id=?");
-                ps.setInt(1, id);
-                ps.executeQuery();
-                ResultSet rs = ps.getResultSet();
-                if (rs.next()) {
-                    model = new Candidate(id, rs.getString("name"));
-                }
-            }
-
         } catch (Exception e) {
             logger.error("Exception: ", e);
         }
-        return model;
+        return post;
+    }
+
+
+    public static void main(String[] args) {
+        PsqlStorePost store = new PsqlStorePost();
+
+        Post post1 = new Post("name1", "desc1");
+        Post post2 = new Post("name2", "desc2");
+        Post post3 = new Post("name3", "desc3");
+
+        store.save(post1);
+        store.save(post2);
+        store.save(post3);
+
+        System.out.println("FIND ALL");
+        store.findAll().forEach(System.out::println);
+        System.out.println();
+
+        System.out.println("FIND BY ID");
+        System.out.println(store.findById(post3.getId()));
+        System.out.println();
+
+        System.out.println("UPDATE");
+        post3.setName("upd");
+        store.save(post3);
+        System.out.println(store.findById(post3.getId()));
+        System.out.println();
+
+//        System.out.println(" DELETE");
+//        store.delete(post3.getId());
+//        store.findAll().forEach(System.out::println);
+
     }
 }

@@ -1,14 +1,14 @@
 package dream.store;
 
 import dream.model.Model;
+import dream.model.Post;
 
 import java.util.Collection;
 
 public interface Store {
-    Collection<Model> findAll(String className);
+    Collection findAll();
 
     void save(Model model);
 
-    Model findById(int id, String className);
-
+    Model findById(int id);
 }
