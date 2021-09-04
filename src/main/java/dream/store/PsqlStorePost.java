@@ -8,7 +8,6 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.*;
-import java.util.stream.IntStream;
 
 import org.apache.log4j.Logger;
 
@@ -158,10 +157,10 @@ public class PsqlStorePost implements Store {
         store.save(post3);
 
 
-        System.out.println("delete from 10 to 50");
-        for(int i = 10; i < 50; i++){
-            store.delete(i);
-        }
+//        System.out.println("delete from 10 to 50");
+//        for(int i = 10; i < 50; i++){
+//            store.delete(i);
+//        }
         System.out.println("FIND ALL");
         store.findAll().forEach(System.out::println);
         System.out.println();
@@ -178,11 +177,5 @@ public class PsqlStorePost implements Store {
         System.out.println(store.findById(post3.getId()));
         System.out.println();
         System.out.println(store.findById(post2.getId()));
-
-
-//        System.out.println(" DELETE");
-//        store.delete(post3.getId());
-//        store.findAll().forEach(System.out::println);
-
     }
 }
