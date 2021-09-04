@@ -21,7 +21,7 @@ public class PsqlStoreUser implements Store{
     private PsqlStoreUser() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("./src/main/resources/db.properties")
+                new FileReader("src/main/resources/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {
@@ -46,7 +46,7 @@ public class PsqlStoreUser implements Store{
     }
 
     public static Store instOf() {
-        return PsqlStoreUser.Lazy.INST;
+        return Lazy.INST;
     }
 
     @Override
@@ -149,16 +149,17 @@ public class PsqlStoreUser implements Store{
     public static void main(String[] args) {
         PsqlStoreUser store = new PsqlStoreUser();
 
-        User user1 = new User("name1", "a@mail.ru", "1");
-        User user2 = new User("name2", "b@mail.ru", "2");
 
-        store.save(user1);
-        store.save(user2);
+
 
 //        System.out.println("delete from 2 to 3");
-//        for(int i = 2; i < 5; i++){
+//        for(int i = 1; i < 10; i++){
 //            store.delete(i);
 //        }
+        User user1 = new User("name1", "a@mail.ru", "1");
+        User user2 = new User("name2", "b@mail.ru", "2");
+        store.save(user1);
+        store.save(user2);
         System.out.println("FIND ALL");
         store.findAll().forEach(System.out::println);
         System.out.println();
@@ -167,9 +168,9 @@ public class PsqlStoreUser implements Store{
         System.out.println(store.findById(user1.getId()));
         System.out.println();
 
-        System.out.println("UPDATE");
-        user2.setName("upd2");
-        store.save(user2);
-        store.findAll().forEach(System.out::println);
+//        System.out.println("UPDATE");
+//        user2.setName("upd2");
+//        store.save(user2);
+//        store.findAll().forEach(System.out::println);
     }
 }
