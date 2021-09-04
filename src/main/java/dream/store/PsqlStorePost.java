@@ -8,6 +8,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.sql.*;
 import java.util.*;
+import java.util.stream.IntStream;
+
 import org.apache.log4j.Logger;
 
 public class PsqlStorePost implements Store {
@@ -83,9 +85,9 @@ public class PsqlStorePost implements Store {
             ps.setString(2, post.getDescription());
             ps.setTimestamp(3, new Timestamp(System.currentTimeMillis()));
             ps.executeUpdate();
-            try (ResultSet id = ps.getGeneratedKeys()) {
-                if (id.next()) {
-                    post.setId(id.getInt(1));
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    post.setId(rs.getInt(1));
                 }
             }
         } catch (SQLException e) {
@@ -96,7 +98,6 @@ public class PsqlStorePost implements Store {
 
     private Model update(Post post) {
         try (Connection cn = pool.getConnection()) {
-
                 PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = ?",
                         PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, post.getName());
@@ -131,6 +132,19 @@ public class PsqlStorePost implements Store {
         return post;
     }
 
+    public boolean delete(int id) {
+        boolean flag = false;
+        try (Connection cn = pool.getConnection()) {
+            PreparedStatement ps =  cn.prepareStatement("DELETE FROM post where id=?");
+            ps.setInt(1, id);
+            ps.executeQuery();
+            flag = ps.executeUpdate() > 0;
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+        }
+        return flag;
+    }
+
 
     public static void main(String[] args) {
         PsqlStorePost store = new PsqlStorePost();
@@ -143,6 +157,11 @@ public class PsqlStorePost implements Store {
         store.save(post2);
         store.save(post3);
 
+
+        System.out.println("delete from 10 to 50");
+        for(int i = 10; i < 50; i++){
+            store.delete(i);
+        }
         System.out.println("FIND ALL");
         store.findAll().forEach(System.out::println);
         System.out.println();
@@ -152,10 +171,14 @@ public class PsqlStorePost implements Store {
         System.out.println();
 
         System.out.println("UPDATE");
-        post3.setName("upd");
+        post3.setName("upd1");
+        post2.setName("Ex1");
         store.save(post3);
+        store.save(post2);
         System.out.println(store.findById(post3.getId()));
         System.out.println();
+        System.out.println(store.findById(post2.getId()));
+
 
 //        System.out.println(" DELETE");
 //        store.delete(post3.getId());
