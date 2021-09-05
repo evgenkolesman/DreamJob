@@ -45,8 +45,8 @@ public class PsqlStoreUser implements Store{
         private static final Store INST = new PsqlStoreUser();
     }
 
-    public static Store instOf() {
-        return Lazy.INST;
+    public static PsqlStoreUser instOf() {
+        return (PsqlStoreUser) Lazy.INST;
     }
 
     @Override
@@ -146,11 +146,26 @@ public class PsqlStoreUser implements Store{
         return flag;
     }
 
+    public User findByEmail(String email) {
+        User user = null;
+        try (Connection cn = pool.getConnection()) {
+            PreparedStatement ps =  cn.prepareStatement("SELECT * FROM users where email=?");
+            ps.setString(1, email);
+            ps.executeQuery();
+            try (ResultSet rs = ps.getResultSet()) {
+                if (rs.next()) {
+                    user = new User(rs.getInt("id"), rs.getString("name"),
+                            rs.getString("email"), rs.getString("password"));
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+        }
+        return user;
+    }
+
     public static void main(String[] args) {
         PsqlStoreUser store = new PsqlStoreUser();
-
-
-
 
 //        System.out.println("delete from 2 to 3");
 //        for(int i = 1; i < 10; i++){
@@ -160,6 +175,10 @@ public class PsqlStoreUser implements Store{
         User user2 = new User("name2", "b@mail.ru", "2");
         store.save(user1);
         store.save(user2);
+        System.out.println("FIND EMAIL");
+        System.out.println(store.findByEmail("a@mail.ru"));
+        System.out.println();
+
         System.out.println("FIND ALL");
         store.findAll().forEach(System.out::println);
         System.out.println();

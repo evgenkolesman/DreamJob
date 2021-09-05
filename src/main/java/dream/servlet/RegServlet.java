@@ -2,6 +2,7 @@ package dream.servlet;
 
 import dream.model.User;
 import dream.store.PsqlStoreUser;
+import dream.store.Store;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,7 +27,8 @@ public class RegServlet extends HttpServlet {
                 email,
                 password
         );
-        if (user.getName().isEmpty()) {
+
+        if (PsqlStoreUser.instOf().findByEmail(email) != null) {
             req.setAttribute("Ошибка", "Такой пользователь уже существует");
             req.getRequestDispatcher("reg.jsp").forward(req, resp);
         } else {
