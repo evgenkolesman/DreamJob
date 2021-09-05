@@ -38,6 +38,9 @@
             <li class="nav-item">
                 <a class="nav-link" href="<%=request.getContextPath()%>/login.jsp">Войти</a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<%=request.getContextPath()%>/logout.do">Выйти</a>
+            </li>
         </ul>
     </div>
 
