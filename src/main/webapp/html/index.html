@@ -8,17 +8,14 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-           function validate() {
+        function validate() {
             if ($('#name').val() === "") {
                 alert("Пожалуйста введите имя");
-            }
-             else if ($('#surname').val() === "") {
+            } else if ($('#surname').val() === "") {
                 alert("Пожалуйста введите фамилию");
-            }
-            else if ($('#sex').val() === "") {
+            } else if ($('#sex').val() === "") {
                 alert("Пожалуйста введите пол");
-            }
-            else if ($('#description').val() === "") {
+            } else if ($('#description').val() === "") {
                 alert("Пожалуйста введите описание");
             }
             return false;
@@ -27,9 +24,21 @@
     </script>
     <script>
         function addRow() {
-            const name = $('#usr').val();
+            if (validate()) {
+                const name = $('#name').val();
+                const surname = $('#surname').val();
+                const description = $('#description').val();
+                const sex = $('#sex').val();
 
-            $('#table tr:last').after('<tr><td>' + name +'</td></tr>');
+                $('#table tr:last').after(
+                    '<tr>'
+                    + '<td>' + name + '</td>'
+                    + '<td>' + surname + '</td>'
+                    + '<td>' + sex + '</td>'
+                    + '<td>' + description + '</td>'
+                    + '</tr>'
+                );
+            }
         }
     </script>
 </head>
@@ -40,65 +49,75 @@
     <p> Просто текст</p>
 </div>
 <div class="container pt-3">
-    <form>
-        <div class="form-group">
-            <label for="name">Имя</label>
-            <input type="text" class="form-control" id="name">
+    <div class="row">
+        <div class="card" style="width: 100%">
+            <div class="card-body">
+                <form>
+                    <div class="form-group">
+                        <label for="name">Имя</label>
+                        <input type="text" class="form-control" id="name" placeholder="Введите Имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="surname">Фамилия</label>
+                        <input type="text" class="form-control" id="surname" placeholder="Введите Фамилию">
+                    </div>
+                    <div class="form-group">
+                        <label for="sex">Пол</label>
+                        <input type="text" class="form-control" id="sex" placeholder="Введите Пол">
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Описание</label>
+                        <input type="text" class="form-control" id="description" placeholder="Введите Описание">
+                    </div>
+                    <button type="submit" class="btn btn-primary" onclick="addRow()">Отправить данные</button>
+                </form>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="surname">Фамилия</label>
-            <input type="text" class="form-control" id="surname">
+    </div>
+
+
+    <div class="row">
+        <div class="card" style="width: 100%">
+            <div class="card-body">
+                <table class="table" id="table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <!--                        <th scope="col">#</th>-->
+                        <th scope="col">Имя</th>
+                        <th scope="col">Фамилия</th>
+                        <th scope="col">Пол</th>
+                        <th scope="col">Описание</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr>
+                        <!--                        <th scope="row">1</th>-->
+                        <td>Mark</td>
+                        <td>Otto</td>
+                        <td>Man</td>
+                        <td>Good</td>
+                    </tr>
+                    <tr>
+                        <!--                        <th scope="row">2</th>-->
+                        <td>Jacob</td>
+                        <td>Thornton</td>
+                        <td>Man</td>
+                        <td>Worse</td>
+                    </tr>
+                    <tr>
+                        <!--                        <th scope="row">3</th>-->
+                        <td>Jade</td>
+                        <td>Bird</td>
+                        <td>Woman</td>
+                        <td>Beautiful</td>
+                    </tr>
+                    </tbody>
+
+                </table>
+            </div>
         </div>
-        <div class="form-group">
-            <label for="sex">Пол</label>
-            <input type="text" class="form-control" id="sex">
-        </div>
-        <div class="form-group">
-            <label for="description">Описание</label>
-            <input type="text" class="form-control" id="description">
-        </div>
-        <button type="button" class="btn btn-default" onclick="return validate();"> Submit</button>
-    </form>
-
-
-    <table class="table">
-        <thead class="thead-dark">
-
-
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Имя</th>
-            <th scope="col">Фамилия</th>
-            <th scope="col">Пол</th>
-            <th scope="col">Описание</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td>Otto</td>
-            <td>Man</td>
-            <td>Good</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>Man</td>
-            <td>Worse</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Jade</td>
-            <td>Bird</td>
-            <td>Woman</td>
-            <td>Beautiful</td>
-        </tr>
-        </tbody>
-
-    </table>
-    <button type="button" class="btn btn-default" onclick="addRow()">Add row</button>
+    </div>
 </div>
+
 </body>
 </html>
