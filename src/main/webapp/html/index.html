@@ -8,18 +8,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
-        // function validate() {
-        //     let name = $('#name').val();
-        //     let surname = $('#surname').val();
-        //     let sex = $('#sex').val();
-        //     let description = $('#description').val();
-        //     alert(name.attr('title'));
-        //     alert(surname.attr('title'));
-        //     return false;
-        //
-        // }
-
-        function validate() {
+           function validate() {
             if ($('#name').val() === "") {
                 alert("Пожалуйста введите имя");
             }
@@ -35,6 +24,13 @@
             return false;
         }
 
+    </script>
+    <script>
+        function addRow() {
+            const name = $('#usr').val();
+
+            $('#table tr:last').after('<tr><td>' + name +'</td></tr>');
+        }
     </script>
 </head>
 <body>
@@ -67,6 +63,8 @@
 
     <table class="table">
         <thead class="thead-dark">
+
+
         <tr>
             <th scope="col">#</th>
             <th scope="col">Имя</th>
@@ -81,7 +79,6 @@
             <td>Mark</td>
             <td>Otto</td>
             <td>Man</td>
-            <
             <td>Good</td>
         </tr>
         <tr>
@@ -99,7 +96,9 @@
             <td>Beautiful</td>
         </tr>
         </tbody>
+
     </table>
+    <button type="button" class="btn btn-default" onclick="addRow()">Add row</button>
 </div>
 </body>
 </html>
