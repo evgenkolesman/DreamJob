@@ -11,14 +11,20 @@ import java.io.IOException;
 
 public class CandidateServlet extends HttpServlet {
 
+
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("candidates", PsqlStoreCandidate.instOf().findAll());
-        req.getRequestDispatcher("candidates.jsp").forward(req, resp);
+    public void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String edit = req.getParameter("edit");
+        String path = edit != null ? "/candidate/edit.jsp" : "candidates.jsp";
+        req.setAttribute("user", req.getSession().getAttribute("user"));
+        if (edit == null) {
+            req.setAttribute("candidates", PsqlStoreCandidate.instOf().findAll());
+        }
+        req.getRequestDispatcher(path).forward(req, resp);
     }
 
     @Override
-    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    public void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.setCharacterEncoding("UTF-8");
         PsqlStoreCandidate.instOf().save(new Candidate(0, req.getParameter("name")));
         resp.sendRedirect(req.getContextPath() + "/candidates.do");

@@ -12,10 +12,16 @@ import java.sql.Timestamp;
 
 public class PostServlet extends HttpServlet {
 
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("posts", PsqlStorePost.instOf().findAll());
-        req.getRequestDispatcher("posts.jsp").forward(req, resp);
+        String edit = req.getParameter("edit");
+        String path = edit != null ? "/post/edit.jsp" : "/posts.jsp";
+        req.setAttribute("user", req.getSession().getAttribute("user"));
+        if (edit == null) {
+            req.setAttribute("posts", PsqlStorePost.instOf().findAll());
+        }
+        req.getRequestDispatcher(path).forward(req, resp);
     }
 
     @Override

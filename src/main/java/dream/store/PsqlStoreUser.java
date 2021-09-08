@@ -18,6 +18,7 @@ public class PsqlStoreUser implements Store{
     private static final Logger logger = Logger.getLogger(PsqlStorePost.class);
     private final BasicDataSource pool = new BasicDataSource();
 
+
     private PsqlStoreUser() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
@@ -28,14 +29,19 @@ public class PsqlStoreUser implements Store{
             logger.error("Error: ", e);
         }
         try {
-            Class.forName(cfg.getProperty("jdbc.driver"));
+            Class.forName("org.postgresql.Driver");
         } catch (Exception e) {
             logger.error("Error: ", e);
         }
-        pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
-        pool.setUrl(cfg.getProperty("jdbc.url"));
-        pool.setUsername(cfg.getProperty("jdbc.username"));
-        pool.setPassword(cfg.getProperty("jdbc.password"));
+
+        pool.setDriverClassName("org.postgresql.Driver");
+        pool.setUrl("jdbc:postgresql://127.0.0.1:5433/DreamJob");
+        pool.setUsername("postgres");
+        pool.setPassword("PassworD1");
+//        pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
+//        pool.setUrl(cfg.getProperty("jdbc.url"));
+//        pool.setUsername(cfg.getProperty("jdbc.username"));
+//        pool.setPassword(cfg.getProperty("jdbc.password"));
         pool.setMinIdle(5);
         pool.setMaxIdle(10);
         pool.setMaxOpenPreparedStatements(100);
@@ -165,7 +171,7 @@ public class PsqlStoreUser implements Store{
     }
 
     public static void main(String[] args) {
-        PsqlStoreUser store = new PsqlStoreUser();
+//        PsqlStoreUser store = new PsqlStoreUser();
 
 //        System.out.println("delete from 2 to 3");
 //        for(int i = 1; i < 10; i++){
@@ -173,18 +179,18 @@ public class PsqlStoreUser implements Store{
 //        }
         User user1 = new User("name1", "a@mail.ru", "1");
         User user2 = new User("name2", "b@mail.ru", "2");
-        store.save(user1);
-        store.save(user2);
+//        store.save(user1);
+//        store.save(user2);
         System.out.println("FIND EMAIL");
-        System.out.println(store.findByEmail("a@mail.ru"));
+        System.out.println(PsqlStoreUser.instOf().findByEmail("a@mail.ru"));
         System.out.println();
 
         System.out.println("FIND ALL");
-        store.findAll().forEach(System.out::println);
+        PsqlStoreUser.instOf().findAll().forEach(System.out::println);
         System.out.println();
 
         System.out.println("FIND BY ID");
-        System.out.println(store.findById(user1.getId()));
+        System.out.println(PsqlStoreUser.instOf().findById(1));
         System.out.println();
 
 //        System.out.println("UPDATE");

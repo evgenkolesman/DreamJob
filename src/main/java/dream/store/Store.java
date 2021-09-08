@@ -1,7 +1,6 @@
 package dream.store;
 
 import dream.model.Model;
-import dream.model.Post;
 
 import java.util.Collection;
 

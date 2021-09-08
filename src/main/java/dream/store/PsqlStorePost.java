@@ -47,23 +47,7 @@ public class PsqlStorePost implements Store {
         return Lazy.INST;
     }
 
-    @Override
-    public Collection<Post> findAll() {
-        List<Post> models = new ArrayList<>();
-            try (Connection cn = pool.getConnection();
-                 PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
-            ) {
-                try (ResultSet it = ps.executeQuery()) {
-                    while (it.next()) {
-                        models.add(new Post(it.getInt("id"), it.getString("name"),
-                                it.getString("description"), it.getTimestamp("created")));
-                    }
-                }
-            } catch (Exception e) {
-                logger.error("Exception: ", e);
-            }
-        return models;
-    }
+
 
     @Override
     public void save(Model model) {
@@ -129,6 +113,24 @@ public class PsqlStorePost implements Store {
             logger.error("Exception: ", e);
         }
         return post;
+    }
+
+    @Override
+    public Collection<Post> findAll() {
+        List<Post> models = new ArrayList<>();
+        try (Connection cn = pool.getConnection();
+             PreparedStatement ps = cn.prepareStatement("SELECT * FROM post")
+        ) {
+            try (ResultSet it = ps.executeQuery()) {
+                while (it.next()) {
+                    models.add(new Post(it.getInt("id"), it.getString("name"),
+                            it.getString("description"), it.getTimestamp("created")));
+                }
+            }
+        } catch (Exception e) {
+            logger.error("Exception: ", e);
+        }
+        return models;
     }
 
     public boolean delete(int id) {

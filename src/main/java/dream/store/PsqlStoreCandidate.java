@@ -12,7 +12,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.*;
 
-public class PsqlStoreCandidate implements Store{
+public class PsqlStoreCandidate implements Store {
 
     private static final Logger logger = Logger.getLogger(PsqlStorePost.class);
     private final BasicDataSource pool = new BasicDataSource();
@@ -77,10 +77,10 @@ public class PsqlStoreCandidate implements Store{
 
     private Model create(Candidate candidate) {
         try (Connection cn = pool.getConnection()) {
-                PreparedStatement ps =  cn.prepareStatement("INSERT INTO candidate (name) VALUES (?);",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, candidate.getName());
-                ps.executeUpdate();
+            PreparedStatement ps = cn.prepareStatement("INSERT INTO candidate (name) VALUES (?);",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, candidate.getName());
+            ps.executeUpdate();
         } catch (Exception e) {
             logger.error("Exception: ", e);
         }
@@ -89,15 +89,15 @@ public class PsqlStoreCandidate implements Store{
 
     private Model update(Model model) {
         try (Connection cn = pool.getConnection()) {
-                PreparedStatement ps = cn.prepareStatement("UPDATE candidate SET name = ?",
-                        PreparedStatement.RETURN_GENERATED_KEYS);
-                ps.setString(1, model.getName());
-                ps.executeUpdate();
-                try (ResultSet id = ps.getGeneratedKeys()) {
-                    if (id.next()) {
-                        model.setId(id.getInt(1));
-                    }
+            PreparedStatement ps = cn.prepareStatement("UPDATE candidate SET name = ?",
+                    PreparedStatement.RETURN_GENERATED_KEYS);
+            ps.setString(1, model.getName());
+            ps.executeUpdate();
+            try (ResultSet id = ps.getGeneratedKeys()) {
+                if (id.next()) {
+                    model.setId(id.getInt(1));
                 }
+            }
         } catch (Exception e) {
             logger.error("Exception: ", e);
         }
@@ -108,14 +108,14 @@ public class PsqlStoreCandidate implements Store{
     public Model findById(int id) {
         Candidate model = null;
         try (Connection cn = pool.getConnection()) {
-                PreparedStatement ps =  cn.prepareStatement("SELECT * FROM candidate where id=?");
-                ps.setInt(1, id);
-                ps.executeQuery();
-                try (ResultSet rs = ps.getResultSet()) {
-                    if (rs.next()) {
-                        model = new Candidate(id, rs.getString("name"));
-                    }
+            PreparedStatement ps = cn.prepareStatement("SELECT * FROM candidate where id=?");
+            ps.setInt(1, id);
+            ps.executeQuery();
+            try (ResultSet rs = ps.getResultSet()) {
+                if (rs.next()) {
+                    model = new Candidate(id, rs.getString("name"));
                 }
+            }
         } catch (Exception e) {
             logger.error("Exception: ", e);
         }
