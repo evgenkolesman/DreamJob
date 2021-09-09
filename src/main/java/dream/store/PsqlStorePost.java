@@ -81,9 +81,10 @@ public class PsqlStorePost implements Store {
 
     private Model update(Post post) {
         try (Connection cn = pool.getConnection()) {
-                PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = ?",
+                PreparedStatement ps = cn.prepareStatement("UPDATE post SET name = ? where id = ?",
                         PreparedStatement.RETURN_GENERATED_KEYS);
                 ps.setString(1, post.getName());
+                ps.setInt(2, post.getId());
                 ps.executeUpdate();
                 try (ResultSet id = ps.getGeneratedKeys()) {
                     if (id.next()) {
@@ -154,9 +155,9 @@ public class PsqlStorePost implements Store {
         Post post2 = new Post("name2", "desc2");
         Post post3 = new Post("name3", "desc3");
 
-        store.save(post1);
-        store.save(post2);
-        store.save(post3);
+//        store.save(post1);
+//        store.save(post2);
+//        store.save(post3);
 
 
 //        System.out.println("delete from 10 to 50");

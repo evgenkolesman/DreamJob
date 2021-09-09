@@ -56,7 +56,7 @@ public class PsqlStoreCandidate implements Store {
         ) {
             try (ResultSet it = ps.executeQuery()) {
                 while (it.next()) {
-                    models.add(new Candidate(it.getInt("id"), it.getString("name")));
+                    models.add(new Candidate(it.getInt("id"), it.getString("name"), it.getString("city_id")));
                 }
             }
         } catch (Exception e) {
@@ -89,9 +89,10 @@ public class PsqlStoreCandidate implements Store {
 
     private Model update(Model model) {
         try (Connection cn = pool.getConnection()) {
-            PreparedStatement ps = cn.prepareStatement("UPDATE candidate SET name = ?",
+            PreparedStatement ps = cn.prepareStatement("UPDATE candidate SET name = ? where id = ?",
                     PreparedStatement.RETURN_GENERATED_KEYS);
             ps.setString(1, model.getName());
+            ps.setInt(2, model.getId());
             ps.executeUpdate();
             try (ResultSet id = ps.getGeneratedKeys()) {
                 if (id.next()) {
@@ -113,7 +114,7 @@ public class PsqlStoreCandidate implements Store {
             ps.executeQuery();
             try (ResultSet rs = ps.getResultSet()) {
                 if (rs.next()) {
-                    model = new Candidate(id, rs.getString("name"));
+                    model = new Candidate(id, rs.getString("name"), rs.getString("city_id"));
                 }
             }
         } catch (Exception e) {

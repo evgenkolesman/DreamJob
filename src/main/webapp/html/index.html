@@ -9,26 +9,27 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
     <script>
         function validate() {
+            let result = true
             if ($('#name').val() === "") {
                 alert("Пожалуйста введите имя");
             } else if ($('#surname').val() === "") {
                 alert("Пожалуйста введите фамилию");
+
             } else if ($('#sex').val() === "") {
                 alert("Пожалуйста введите пол");
+
             } else if ($('#description').val() === "") {
                 alert("Пожалуйста введите описание");
             }
-            return false;
+            return true;
         }
 
-    </script>
-    <script>
         function addRow() {
             if (validate()) {
-                const name = $('#name').val();
-                const surname = $('#surname').val();
-                const description = $('#description').val();
-                const sex = $('#sex').val();
+                let name = $('#name').val();
+                let surname = $('#surname').val();
+                let description = $('#description').val();
+                let sex = $('#sex').val();
 
                 $('#table tr:last').after(
                     '<tr>'
@@ -55,19 +56,19 @@
                 <form>
                     <div class="form-group">
                         <label for="name">Имя</label>
-                        <input type="text" class="form-control" id="name" placeholder="Введите Имя">
+                        <input type="text" class="form-control"  name="name" id="name" placeholder="Введите Имя">
                     </div>
                     <div class="form-group">
                         <label for="surname">Фамилия</label>
-                        <input type="text" class="form-control" id="surname" placeholder="Введите Фамилию">
+                        <input type="text" class="form-control" name="surname" id="surname" placeholder="Введите Фамилию">
                     </div>
                     <div class="form-group">
                         <label for="sex">Пол</label>
-                        <input type="text" class="form-control" id="sex" placeholder="Введите Пол">
+                        <input type="text" class="form-control" name="sex" id="sex" placeholder="Введите Пол">
                     </div>
                     <div class="form-group">
                         <label for="description">Описание</label>
-                        <input type="text" class="form-control" id="description" placeholder="Введите Описание">
+                        <input type="text" class="form-control" name="description" id="description" placeholder="Введите Описание">
                     </div>
                     <button type="submit" class="btn btn-primary" onclick="addRow()">Отправить данные</button>
                 </form>
@@ -108,7 +109,6 @@
                         <td>Beautiful</td>
                     </tr>
                     </tbody>
-
                 </table>
             </div>
         </div>

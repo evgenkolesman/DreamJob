@@ -38,22 +38,22 @@
             <li class="nav-item">
                 <a class="nav-link" href='<c:url value="/candidates.do?edit=true" />'>Добавить кандидата</a>
             </li>
-<%--            <c:if test="${user == null}">--%>
-<%--                <li class="nav-item">--%>
-<%--                    <a class="nav-link" href='<c:url value="/reg.do" />'>Зарегистрироваться</a>--%>
-<%--                </li>--%>
-<%--                <li class="nav-item">--%>
-<%--                    <a class="nav-link" href='<c:url value="/auth.do" />'>Войти</a>--%>
-<%--                </li>--%>
-<%--            </c:if>--%>
-<%--            <c:if test="${user != null}">--%>
-<%--                <li class="nav-item">--%>
-<%--                    <a class="nav-link" href="#">${user.name}</a>--%>
-<%--                </li>--%>
-<%--                <li class="nav-item">--%>
-<%--                    <a class="nav-link" href='<c:url value="/auth.do?exit=true" />'>Выйти</a>--%>
-<%--                </li>--%>
-<%--            </c:if>--%>
+            <c:if test="${user == null}">
+                <li class="nav-item">
+                    <a class="nav-link" href='<c:url value="/reg.do" />'>Зарегистрироваться</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href='<c:url value="/auth.do" />'>Войти</a>
+                </li>
+            </c:if>
+            <c:if test="${user != null}">
+                <li class="nav-item">
+                    <a class="nav-link" href="#">${user.name}</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href='<c:url value="/auth.do?exit=true" />'>Выйти</a>
+                </li>
+            </c:if>
         </ul>
     </div>
     <div class="row">
