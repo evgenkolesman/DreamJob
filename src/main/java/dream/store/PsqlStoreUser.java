@@ -22,7 +22,7 @@ public class PsqlStoreUser implements Store{
     private PsqlStoreUser() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("src/main/resources/db.properties")
+                new FileReader("/home/evgenios/IdeaProjects/DreamJob/src/main/resources/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {
@@ -34,14 +34,14 @@ public class PsqlStoreUser implements Store{
             logger.error("Error: ", e);
         }
 
-        pool.setDriverClassName("org.postgresql.Driver");
-        pool.setUrl("jdbc:postgresql://127.0.0.1:5433/DreamJob");
-        pool.setUsername("postgres");
-        pool.setPassword("PassworD1");
-//        pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
-//        pool.setUrl(cfg.getProperty("jdbc.url"));
-//        pool.setUsername(cfg.getProperty("jdbc.username"));
-//        pool.setPassword(cfg.getProperty("jdbc.password"));
+//        pool.setDriverClassName("org.postgresql.Driver");
+//        pool.setUrl("jdbc:postgresql://127.0.0.1:5433/DreamJob");
+//        pool.setUsername("postgres");
+//        pool.setPassword("PassworD1");
+        pool.setDriverClassName(cfg.getProperty("jdbc.driver"));
+        pool.setUrl(cfg.getProperty("jdbc.url"));
+        pool.setUsername(cfg.getProperty("jdbc.username"));
+        pool.setPassword(cfg.getProperty("jdbc.password"));
         pool.setMinIdle(5);
         pool.setMaxIdle(10);
         pool.setMaxOpenPreparedStatements(100);

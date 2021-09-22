@@ -56,7 +56,7 @@ public class MemStore implements Store {
 
     @Override
     public Collection findAll() {
-        return null;
+        return posts.entrySet();
     }
 
     @Override

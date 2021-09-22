@@ -20,7 +20,7 @@ public class PsqlStoreCandidate implements Store {
     private PsqlStoreCandidate() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("db.properties")
+                new FileReader("/home/evgenios/IdeaProjects/DreamJob/src/main/resources/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {

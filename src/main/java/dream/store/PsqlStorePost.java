@@ -19,7 +19,7 @@ public class PsqlStorePost implements Store {
     private PsqlStorePost() {
         Properties cfg = new Properties();
         try (BufferedReader io = new BufferedReader(
-                new FileReader("src/main/resources/db.properties")
+                new FileReader("/home/evgenios/IdeaProjects/DreamJob/src/main/resources/db.properties")
         )) {
             cfg.load(io);
         } catch (Exception e) {

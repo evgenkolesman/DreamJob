@@ -1,8 +1,8 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page contentType="text/html; charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
 <head>
+    <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+    <%@ page contentType="text/html; charset=UTF-8" %>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -61,16 +61,17 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="can" items="${candidates}">
-                        <tr class="row">
-<%--                            <td class="col-md-3">--%>
-<%--                                <c:if test="${can.photo == null}">--%>
-<%--                                    <img style="width:100%;" src='<c:url value="/static/default.jpg"/>' alt="img-fluid">--%>
-<%--                                </c:if>--%>
-<%--                                <c:if test="${can.photo != null}">--%>
-<%--                                    <img style="width:100%;" src='<c:url value="/download?name=${can.photo.name}"/>' alt="img-fluid">--%>
-<%--                                </c:if>--%>
-<%--                            </td>--%>
+                    <tr class="row">
+                        <c:forEach items="${candidates}" var="can">
+                            <td class="col-md-3">
+                                <c:if test="${can.photo == null}">
+                                    <img style="width:100%;" src='<c:url value="![](../../../AAA.jpg)"/>' alt="img-fluid">
+                                </c:if>
+                                <c:if test="${can.photo != null}">
+                                    <img style="width:100%;" src='<c:url value="/download?name=${can.photo.name}"/>'
+                                         alt="img-fluid">
+                                </c:if>
+                            </td>
                             <td class="col-md-9">
                                 <c:out value="${can.name}"/>
                                 <a href='<c:url value="/candidates.do?edit=true&id=${can.id}"/>'>
@@ -78,11 +79,12 @@
                                 </a>
                                 <br>
                                 <p>
-                                        ${can.memo}
+                                        ${can.city_id}
                                 </p>
                             </td>
-                        </tr>
-                    </c:forEach>
+                        </c:forEach>
+                    </tr>
+
                     </tbody>
                 </table>
             </div>

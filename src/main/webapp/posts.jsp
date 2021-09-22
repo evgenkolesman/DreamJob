@@ -1,9 +1,10 @@
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ page contentType="text/html; charset=UTF-8" %>
 <!doctype html>
 <html lang="en">
 <head>
+
+    <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core" %>
+    <%@ page contentType="text/html; charset=UTF-8" %>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -62,16 +63,16 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="post" items="${posts}">
                         <tr>
+                            <c:forEach var="post" items="${posts}">
                             <td>
                                 <a href='<c:url value="/posts.do?edit=true&id=${post.id}"/>'>
                                     <i class="fa fa-edit mr-3"></i>
                                 </a>
                                 <c:out value="${post.name}"/>
                             </td>
+                            </c:forEach>
                         </tr>
-                    </c:forEach>
                     </tbody>
                 </table>
             </div>
