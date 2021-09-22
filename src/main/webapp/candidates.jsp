@@ -64,13 +64,13 @@
                     <tr class="row">
                         <c:forEach items="${candidates}" var="can">
                             <td class="col-md-3">
-                                <c:if test="${can.photo == null}">
-                                    <img style="width:100%;" src='<c:url value="![](../../../AAA.jpg)"/>' alt="img-fluid">
-                                </c:if>
-                                <c:if test="${can.photo != null}">
-                                    <img style="width:100%;" src='<c:url value="/download?name=${can.photo.name}"/>'
-                                         alt="img-fluid">
-                                </c:if>
+<%--                                <c:if test="${can.photo == null}">--%>
+<%--                                    <img style="width:100%;" src='<c:url value='*.jpeg'/>' alt="img-fluid">--%>
+<%--                                </c:if>--%>
+<%--                                <c:if test="${can.photo != null}">--%>
+<%--                                    <img style="width:100%;" src='<c:url value="/download?name=${can.photo.name}"/>'--%>
+<%--                                         alt="img-fluid">--%>
+<%--                                </c:if>--%>
                             </td>
                             <td class="col-md-9">
                                 <c:out value="${can.name}"/>
